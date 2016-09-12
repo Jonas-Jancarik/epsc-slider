@@ -23,7 +23,7 @@ Drupal.behaviors.epsc = {
 
     jQuery('.page-file .region-content .file').addClass('btn btn-primary btn-large');
 
-    // FIRST THINGS FIRST
+// FIRST THINGS FIRST
 // hide 'Slider' (we could also completeley remove it from the
 // DOM later to be really clean - for debugging better to leave in.)
 jQuery('#block-views-homepage-slider-block').hide();
@@ -167,7 +167,6 @@ jQuery(items).each(function (i) {
   targetUrl = targetUrl ? targetUrl : '';
 
   var bgImgSrc = jQuery(this).find('.views-field-field-bg-img-src img').attr('src');
-  bgImgSrc = bgImgSrc.replace("styles/publications_listing/public/", "");
 
   // Get bgOverlayColor.
   var bgOverlayColor = jQuery(this).find('.views-field-field-bg-overlay-color .field-content').html();
@@ -175,36 +174,37 @@ jQuery(items).each(function (i) {
   var contentOverlayColor = jQuery(this).find('.views-field-field-content-overlay-color .field-content').html();
 
   // Apply default overlay colours if custom colours not defined for this slide.
-  var contentOverlayColor = contentOverlayColor ? contentOverlayColor : opt_contentOverlayColor;
-  var bgOverlayColor = bgOverlayColor ? bgOverlayColor : opt_bgOverlayColor;
+  contentOverlayColor = contentOverlayColor ? contentOverlayColor : opt_contentOverlayColor;
+  bgOverlayColor = bgOverlayColor ? bgOverlayColor : opt_bgOverlayColor;
 
   slides[i] = new slide(targetUrl, bgImgSrc, bgOverlayColor, contentOverlayColor);
 
-  var title = jQuery(this).find('h3').text();
-  if (title) {
-    slides[i].content.push(new slideElement('slide-title', 'div', title))
-  }
-
-  var subtitle = jQuery(this).find('.views-field-field-slider-subtitle').find('.field-content').html();
-  if (subtitle) {
-    slides[i].content.push(new slideElement('slide-subtitle', 'div', subtitle))
-  }
-
-  var text = jQuery(this).find('.views-field-field-slider-description').find('.field-content').html();
-  if (text) {
-    slides[i].content.push(new slideElement('slide-text', 'div', text))
-  }
-
   var freeContent = jQuery(this).find('.free-content').html();
   if (freeContent) {
-    slides[i].content.push(new slideElement('slide-free-content', 'div', freeContent))
+    slides[i].content.push(new slideElement('slide-free-content', 'div', freeContent));
+  } else { // other elements are only displayed if free content is not provided
+
+    var title = jQuery(this).find('h3').text();
+    if (title) {
+      slides[i].content.push(new slideElement('slide-title', 'div', title));
+    }
+
+    var subtitle = jQuery(this).find('.views-field-field-slider-subtitle').find('.field-content').html();
+    if (subtitle) {
+      slides[i].content.push(new slideElement('slide-subtitle', 'div', subtitle));
+    }
+
+    var text = jQuery(this).find('.views-field-field-slider-description').find('.field-content').html();
+    if (text) {
+      slides[i].content.push(new slideElement('slide-text', 'div', text));
+    }
+
   }
 
 });
 
 for (var i = 0; i < slides.length; i++) {
   // Prepare slide HTML.
-  console.log('slide ' + i);
   var contentHtml = '';
 
   for (var n = 0; n < slides[i].content.length; n++) {
@@ -321,10 +321,10 @@ else {
 
 // **********************************
 // *  END: SLIDER CONTROL ELEMENTS  *
-// **********************************.
-// ********************************
-// *  END: SLIDER HEIGHT CONTROl  *
-// ********************************.
+// **********************************
+// ***************************
+// *  SLIDER HEIGHT CONTROl  *
+// ***************************
 // By default, the slider height is set by CSS at a percentage of its width.
 // (This is possible thanks to the fact that padding-bottom is calculated as
 // % of the parent element width).
